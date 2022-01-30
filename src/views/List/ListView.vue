@@ -38,7 +38,9 @@ export default {
          timeout
       })
       const tableContent = computed(() =>
-         state.items.filter(item => filterList(item, state.search)).map(mapList)
+         state.items
+            .filter(item => filterList(item, state.search.toLowerCase()))
+            .map(mapList)
       )
       const onInput = ({ target: { value } }) => {
          clearTimeout(timeout)
