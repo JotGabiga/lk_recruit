@@ -45,7 +45,7 @@ export default {
             .map(mapList)
       )
       const reverse = () => {
-         return state.items
+         return [...state.items]
             .sort((a, b) => {
                return a.fib - b.fib
             })
