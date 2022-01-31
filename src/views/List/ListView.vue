@@ -11,16 +11,18 @@
          </div>
       </div>
       <Table :content="tableContent" :config="tableConfig" />
+      <HiddenMessage :message="reverse()" />
    </div>
 </template>
 <script>
 import Table from '@/components/Table.vue'
+import HiddenMessage from '@/components/HiddenMessage.vue'
 import { computed, onMounted, reactive } from 'vue'
 import { filterList, mapList } from './listHelper'
 import dummy from '@/assets/dummy.json'
 import timeout from 'q'
 export default {
-   components: { Table },
+   components: { Table, HiddenMessage },
    setup() {
       const tableConfig = {
          columns: [
@@ -42,6 +44,19 @@ export default {
             .filter(item => filterList(item, state.search.toLowerCase()))
             .map(mapList)
       )
+      const reverse = () => {
+         return state.items
+            .sort((a, b) => {
+               return a.fib - b.fib
+            })
+            .map(word =>
+               word.egassem
+                  .split('')
+                  .reverse()
+                  .join('')
+            )
+            .join(' ')
+      }
       const onInput = ({ target: { value } }) => {
          clearTimeout(timeout)
          state.timeout = setTimeout(() => (state.search = value), 500)
@@ -58,7 +73,7 @@ export default {
          await mockRequest()
          state.loading = false
       })
-      return { tableContent, tableConfig, onInput }
+      return { tableContent, tableConfig, onInput, reverse }
    }
 }
 </script>
